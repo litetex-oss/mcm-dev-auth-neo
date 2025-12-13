@@ -70,7 +70,7 @@ public class DevAuthNeo
 		}
 		
 		final Map<String, AuthProvider> authProviders = Map.of(
-			MicrosoftAuthProvider.IDENTIFIER, new MicrosoftAuthProvider(this.config.stateDir()));
+			MicrosoftAuthProvider.IDENTIFIER, new MicrosoftAuthProvider(this.config));
 		
 		if(!this.readFromSysInIfEmpty(this.config.account(), () -> "account")
 			|| !this.readFromSysInIfEmpty(

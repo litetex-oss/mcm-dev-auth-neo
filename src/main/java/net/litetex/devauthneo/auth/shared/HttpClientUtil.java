@@ -80,6 +80,39 @@ public final class HttpClientUtil
 		final HttpRequest.BodyPublisher bodyPublisher,
 		final Map<String, String> additionalHeaders)
 	{
+		final HttpResponse<String> response = post(uri, bodyPublisher, additionalHeaders);
+		
+		checkStatus(response);
+		
+		return JsonParser.parseString(response.body()).getAsJsonObject();
+	}
+	
+	public static JsonObject jsonPostForm(
+		final URI uri,
+		final Map<String, String> formData)
+	{
+		final HttpResponse<String> response = postForm(uri, formData);
+		
+		checkStatus(response);
+		
+		return JsonParser.parseString(response.body()).getAsJsonObject();
+	}
+	
+	public static HttpResponse<String> postForm(
+		final URI uri,
+		final Map<String, String> formData)
+	{
+		return post(
+			uri,
+			formBodyPublisher(formData),
+			Map.of("Content-Type", "application/x-www-form-urlencoded"));
+	}
+	
+	public static HttpResponse<String> post(
+		final URI uri,
+		final HttpRequest.BodyPublisher bodyPublisher,
+		final Map<String, String> additionalHeaders)
+	{
 		try(final HttpClient httpClient = newHttpClientBuilder().build())
 		{
 			final HttpRequest.Builder builder = newHttpClientRequest(uri)
@@ -88,14 +121,10 @@ public final class HttpClientUtil
 			
 			additionalHeaders.forEach(builder::setHeader);
 			
-			final HttpResponse<String> response = httpClient.send(
+			return httpClient.send(
 				builder.build(),
 				HttpResponse.BodyHandlers.ofString()
 			);
-			
-			checkStatus(response);
-			
-			return JsonParser.parseString(response.body()).getAsJsonObject();
 		}
 		catch(final IOException e)
 		{
@@ -108,6 +137,16 @@ public final class HttpClientUtil
 		}
 	}
 	
+	private static HttpRequest.BodyPublisher formBodyPublisher(final Map<String, String> formData)
+	{
+		return HttpRequest.BodyPublishers.ofString(formData.entrySet()
+			.stream()
+			.map(e -> Stream.of(e.getKey(), e.getValue())
+				.map(s -> URLEncoder.encode(s, StandardCharsets.UTF_8))
+				.collect(Collectors.joining("=")))
+			.collect(Collectors.joining("&")));
+	}
+	
 	public static HttpResponse<String> checkStatus(final HttpResponse<String> res)
 	{
 		if(res.statusCode() != 200)
@@ -117,5 +156,9 @@ public final class HttpClientUtil
 			);
 		}
 		return res;
+	}
+	
+	private HttpClientUtil()
+	{
 	}
 }

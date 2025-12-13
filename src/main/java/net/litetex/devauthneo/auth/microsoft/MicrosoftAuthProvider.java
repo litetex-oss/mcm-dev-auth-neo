@@ -11,8 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.litetex.devauthneo.auth.AuthProvider;
-import net.litetex.devauthneo.auth.microsoft.oauth.CodeOAuthProvider;
-import net.litetex.devauthneo.auth.microsoft.oauth.OAuthProvider;
+import net.litetex.devauthneo.auth.microsoft.oauth.OAuthGrantFlow;
+import net.litetex.devauthneo.auth.microsoft.oauth.authcode.EmbeddedAuthCodeGrantFlow;
+import net.litetex.devauthneo.auth.microsoft.oauth.authcode.ExternalAuthCodeGrantFlow;
+import net.litetex.devauthneo.auth.microsoft.oauth.devicecode.DeviceCodeGrantFlow;
+import net.litetex.devauthneo.config.DevAuthNeoConfig;
+import net.litetex.devauthneo.config.microsoft.oauth2.authcode.EmbeddedAuthCodeGrantFlowConfig;
+import net.litetex.devauthneo.config.microsoft.oauth2.authcode.ExternalAuthCodeGrantFlowConfig;
+import net.litetex.devauthneo.config.microsoft.oauth2.devicecode.DeviceCodeGrantFlowConfig;
 import net.litetex.devauthneo.shared.json.JSONSerializer;
 
 
@@ -26,15 +32,22 @@ public class MicrosoftAuthProvider implements AuthProvider
 	private static final String UUID = "uuid";
 	private static final String USERNAME = "username";
 	
-	private final OAuthProvider oAuthProvider = new CodeOAuthProvider();
+	private final OAuthGrantFlow oAuthGrantFlow;
 	
 	private final Path file;
 	
 	private Map<String, Tokens> nameTokens = new HashMap<>();
 	
-	public MicrosoftAuthProvider(final Path stateDir)
+	public MicrosoftAuthProvider(final DevAuthNeoConfig config)
 	{
-		this.file = stateDir.resolve("microsoft-accounts.json");
+		this.file = config.stateDir().resolve("microsoft-accounts.json");
+		this.oAuthGrantFlow = switch(config.oAuth2())
+		{
+			case final EmbeddedAuthCodeGrantFlowConfig c -> new EmbeddedAuthCodeGrantFlow(c, config.stateDir());
+			case final ExternalAuthCodeGrantFlowConfig c -> ExternalAuthCodeGrantFlow.create(c);
+			case final DeviceCodeGrantFlowConfig c -> DeviceCodeGrantFlow.create(c);
+			default -> throw new IllegalArgumentException("Unknown oauth2 config type");
+		};
 	}
 	
 	@Override
@@ -49,7 +62,7 @@ public class MicrosoftAuthProvider implements AuthProvider
 		this.readFile();
 		
 		final MicrosoftLoginExecutor loginExecutor =
-			new MicrosoftLoginExecutor(this.oAuthProvider, this.nameTokens.get(account));
+			new MicrosoftLoginExecutor(this.oAuthGrantFlow, this.nameTokens.get(account));
 		final LoginData loginData = loginExecutor.login();
 		
 		loginExecutor.requiresTokenUpdate().ifPresent(t -> {

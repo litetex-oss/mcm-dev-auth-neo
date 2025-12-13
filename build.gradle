@@ -42,6 +42,9 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    modImplementation "org.slf4j:jul-to-slf4j:2.0.17"
+    modImplementation "me.friwi:jcefmaven:141.0.10"
 }
 
 processResources {

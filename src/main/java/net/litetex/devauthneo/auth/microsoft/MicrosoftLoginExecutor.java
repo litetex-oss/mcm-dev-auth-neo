@@ -19,7 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
-import net.litetex.devauthneo.auth.microsoft.oauth.OAuthProvider;
+import net.litetex.devauthneo.auth.microsoft.oauth.OAuthGrantFlow;
 import net.litetex.devauthneo.auth.microsoft.token.OAuthToken;
 import net.litetex.devauthneo.auth.microsoft.token.Token;
 import net.litetex.devauthneo.auth.microsoft.token.XBLToken;
@@ -38,21 +38,22 @@ class MicrosoftLoginExecutor
 	
 	private static final int NOT_FOUND = 404;
 	
-	private final OAuthProvider oAuthProvider;
+	private final OAuthGrantFlow oAuthGrantFlow;
 	private final Tokens tokens;
 	
 	private boolean updatedTokens;
 	
 	MicrosoftLoginExecutor(
-		final OAuthProvider oAuthProvider,
+		final OAuthGrantFlow oAuthGrantFlow,
 		final Tokens tokens)
 	{
-		this.oAuthProvider = oAuthProvider;
+		this.oAuthGrantFlow = oAuthGrantFlow;
 		this.tokens = Objects.requireNonNullElseGet(tokens, Tokens::new);
 	}
 	
 	public LoginData login()
 	{
+		LOG.info("Executing login; Selected OAuth2 Provider is {}", this.oAuthGrantFlow);
 		final Token mcSession = this.getToken("session", Tokens::getSession, Tokens::setSession, this::fetchMcSession);
 		
 		try(final HttpClient httpClient = HttpClientUtil.newHttpClientBuilder().build())
@@ -124,8 +125,8 @@ class MicrosoftLoginExecutor
 			"oAuth",
 			Tokens::getOauth,
 			Tokens::setOauth,
-			this.oAuthProvider::getToken,
-			this.oAuthProvider::refreshToken);
+			this.oAuthGrantFlow::getToken,
+			this.oAuthGrantFlow::refreshToken);
 		
 		final JsonObject object = new JsonObject();
 		
