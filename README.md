@@ -17,9 +17,6 @@ This is a "reincarnation" of [DevAuth](https://github.com/DJtheRedstoner/DevAuth
 
 <details><summary>via Maven Central (default)</summary>
 
-> [!NOTE]
-> The contents are hosted on [Maven Central](https://repo.maven.apache.org/maven2/net/litetex/mcm/). You shouldn't have to change anything as this is the default maven repo.
-
 Add the following to ``build.gradle``:
 ```groovy
 dependencies {
