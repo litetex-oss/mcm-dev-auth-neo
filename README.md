@@ -54,12 +54,18 @@ dependencies {
 
 </details>
 
-### Configuration
-
-NOTE: Once installed the mod will also automatically give you hints what to do in the console/logs.
+### Quickstart
 
 IMPORTANT: **DevAuth is disabled by default**, in order to be unobtrusive.<br/>
 The simplest way to enable it is by setting the corresponding system property: ``-Ddevauth.enabled=1``
+
+* When launching for the first time you will be prompted to enter your credentials
+    * You will also get hints on what to do in the console/logs when required
+* After the authentication was successful the generated tokens will be stored in `microsoft_accounts.json`
+    * Future logins will try to reuse these tokens
+* The tokens are then delegated to the game and it starts as usual
+
+### Configuration
 
 <details><summary>The configuration is dynamically loaded from (sorted by highest priority)</summary>
 
@@ -149,18 +155,11 @@ _NOTE: All grant-flow options are additionally prefixed with `microsoft.oauth2.`
 
 Delete `%USERPROFILE%\.dev-auth-neo` (Windows) or `~/.dev-auth-neo` (Linux)
 
-### I want to switch to another account. What's the easiest way?
+### I want to switch to another account
+
+_What's the easiest way to do this?_
 
 Set ``-Ddevauth.account=otherAccountName``
-
-### How does the login work?
-
-#### Microsoft
-* When logging in for the first your browser will open prompting you to login with a Microsoft account
-    * If this does not work: The link is also printed to the console - click that instead
-* After authenticating the generated tokens will be stored in `microsoft_accounts.json`
-    * Future logins will try to reuse these tokens
-* The tokens are then delegated to the Minecraft client
 
 <!-- modrinth_exclude.start -->
 
