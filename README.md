@@ -1,7 +1,7 @@
 <!-- modrinth_exclude.start -->
 
 [![Version](https://img.shields.io/modrinth/v/dev-auth-neo)](https://modrinth.com/mod/dev-auth-neo)
-[![Build](https://img.shields.io/github/actions/workflow/status/litetex-oss/dev-auth-neo/check-build.yml?branch=dev)](https://github.com/litetex-oss/dev-auth-neo/actions/workflows/check-build.yml?query=branch%3Adev)
+[![Build](https://img.shields.io/github/actions/workflow/status/litetex-oss/mcm-dev-auth-neo/check-build.yml?branch=dev)](https://github.com/litetex-oss/mcm-dev-auth-neo/actions/workflows/check-build.yml?query=branch%3Adev)
 
 # DevAuth Neo (Fabric)
 
