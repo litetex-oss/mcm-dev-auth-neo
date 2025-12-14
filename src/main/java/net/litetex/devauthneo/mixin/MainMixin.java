@@ -14,6 +14,14 @@ public abstract class MainMixin
 	@ModifyVariable(method = "main", at = @At("HEAD"), argsOnly = true, remap = false)
 	private static String[] modifyArgs(final String[] args)
 	{
-		return new DevAuthNeo().processArguments(args);
+		final long startMs = System.currentTimeMillis();
+		try
+		{
+			return new DevAuthNeo().processArguments(args);
+		}
+		finally
+		{
+			DevAuthNeo.LOG.debug("Total mixin overhead time: {}ms", System.currentTimeMillis() - startMs);
+		}
 	}
 }

@@ -8,5 +8,5 @@ public interface AuthProvider
 {
 	Set<String> possibleArgs();
 	
-	Map<String, String> login(String account);
+	Map<String, String> getLoginParams(String account);
 }

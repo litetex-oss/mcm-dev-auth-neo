@@ -29,7 +29,7 @@ import net.litetex.devauthneo.shared.config.RuntimeConfiguration;
 
 public class DevAuthNeo
 {
-	private static final Logger LOG = LoggerFactory.getLogger(DevAuthNeo.class);
+	public static final Logger LOG = LoggerFactory.getLogger(DevAuthNeo.class);
 	
 	private final Path userhomeConfigFilePath;
 	private final DevAuthNeoConfig config;
@@ -88,7 +88,7 @@ public class DevAuthNeo
 			return args;
 		}
 		
-		final Map<String, String> loginOverrideArgValues = ap.login(this.config.account().value());
+		final Map<String, String> loginOverrideArgValues = ap.getLoginParams(this.config.account().value());
 		
 		final Set<String> argsToIgnore = ap.possibleArgs()
 			.stream()
@@ -108,6 +108,8 @@ public class DevAuthNeo
 				cleanedArgs.add(arg);
 			}
 		}
+		
+		LOG.info("DevAuth active for account '{}'", this.config.account().value());
 		
 		return Stream.concat(
 				cleanedArgs.stream(),

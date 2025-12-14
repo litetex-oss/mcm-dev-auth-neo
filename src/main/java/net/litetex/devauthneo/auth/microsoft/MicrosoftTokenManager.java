@@ -1,8 +1,6 @@
 package net.litetex.devauthneo.auth.microsoft;
 
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
@@ -16,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 import net.litetex.devauthneo.auth.microsoft.oauth.OAuthGrantFlow;
@@ -26,17 +23,14 @@ import net.litetex.devauthneo.auth.microsoft.token.XBLToken;
 import net.litetex.devauthneo.auth.shared.HttpClientUtil;
 
 
-class MicrosoftLoginExecutor
+class MicrosoftTokenManager
 {
-	private static final Logger LOG = LoggerFactory.getLogger(MicrosoftLoginExecutor.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MicrosoftTokenManager.class);
 	
 	private static final URI XBL_URI = URI.create("https://user.auth.xboxlive.com/user/authenticate");
 	private static final URI XSTS_URI = URI.create("https://xsts.auth.xboxlive.com/xsts/authorize");
 	private static final URI MINECRAFT_URI =
 		URI.create("https://api.minecraftservices.com/authentication/login_with_xbox");
-	private static final URI MINECRAFT_PROFILE_URI = URI.create("https://api.minecraftservices.com/minecraft/profile");
-	
-	private static final int NOT_FOUND = 404;
 	
 	private final OAuthGrantFlow oAuthGrantFlow;
 	private final boolean forceHandleAllTokensAsExpired;
@@ -44,7 +38,7 @@ class MicrosoftLoginExecutor
 	
 	private boolean updatedTokens;
 	
-	MicrosoftLoginExecutor(
+	MicrosoftTokenManager(
 		final OAuthGrantFlow oAuthGrantFlow,
 		final boolean forceHandleAllTokensAsExpired,
 		final Tokens tokens)
@@ -52,44 +46,19 @@ class MicrosoftLoginExecutor
 		this.oAuthGrantFlow = oAuthGrantFlow;
 		this.forceHandleAllTokensAsExpired = forceHandleAllTokensAsExpired;
 		this.tokens = Objects.requireNonNullElseGet(tokens, Tokens::new);
+		
+		LOG.debug("Initialized with {}", this.oAuthGrantFlow.getClass().getSimpleName());
 	}
 	
-	public LoginData login()
+	public String getSessionToken()
 	{
-		LOG.info("Executing login; Selected OAuth2 Provider is {}", this.oAuthGrantFlow);
-		final Token mcSession = this.getToken("session", Tokens::getSession, Tokens::setSession, this::fetchMcSession);
-		
-		try(final HttpClient httpClient = HttpClientUtil.newHttpClientBuilder().build())
-		{
-			final HttpResponse<String> response = httpClient.send(
-				HttpClientUtil.newHttpClientRequest(MINECRAFT_PROFILE_URI)
-					.setHeader("Authorization", "Bearer " + mcSession.getToken())
-					.GET()
-					.build(),
-				HttpResponse.BodyHandlers.ofString());
-			
-			if(response.statusCode() == NOT_FOUND)
-			{
-				throw new RuntimeException("404 received for minecraft profile, does the user own the game?");
-			}
-			
-			final String body = HttpClientUtil.checkStatus(response).body();
-			final JsonObject profileObject = JsonParser.parseString(body).getAsJsonObject();
-			
-			return new LoginData(
-				mcSession.getToken(),
-				profileObject.get("id").getAsString(),
-				profileObject.get("name").getAsString());
-		}
-		catch(final Exception e)
-		{
-			throw new RuntimeException("Failed to fetch minecraft profile", e);
-		}
+		return this.getToken("session", Tokens::getSession, Tokens::setSession, this::fetchMcSession).getToken();
 	}
 	
 	private Token fetchMcSession()
 	{
-		final XBLToken xstsToken = this.getToken("xsts", Tokens::getXsts, Tokens::setXsts, this::fetchXSTSToken);
+		final XBLToken xstsToken =
+			this.getToken("xsts", Tokens::getXsts, Tokens::setXsts, this::fetchXSTSToken);
 		
 		final JsonObject object = new JsonObject();
 		object.addProperty("identityToken", "XBL3.0 x=" + xstsToken.getUserHash() + ";" + xstsToken.getToken());

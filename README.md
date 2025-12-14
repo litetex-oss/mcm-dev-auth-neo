@@ -89,7 +89,7 @@ The simplest way to enable it is by setting the corresponding system property: `
 | `account-type` | `String` | `microsoft` | Currently only Microsoft is supported |
 | `force-handle-all-tokens-as-expired` | `bool` | `false` | Handles all existing tokens as if they have expired and refreshes them |
 | `state-dir` | `String` | Automatically determined<br/>`~/.dev-auth-neo`) | The directory where the login information of the provider will be saved |
-
+| `cache-profile-info-minutes` | `int` | `360`<br/>6h | How long should fetched profile information be cached? |
 
 #### Microsoft Grant-Flow options
 
@@ -161,6 +161,13 @@ Delete `%USERPROFILE%\.dev-auth-neo` (Windows) or `~/.dev-auth-neo` (Linux)
 _What's the easiest way to do this?_
 
 Set ``-Ddevauth.account=otherAccountName``
+
+### Security?
+
+The tokens are stored in a file on the disk in above specified folder.
+As with all data on your PC, you as a user are responsible for keeping them secure!
+
+If they got compromissed: Revoke them [here](https://account.live.com/consent/Manage)
 
 <!-- modrinth_exclude.start -->
 

@@ -2,6 +2,7 @@ package net.litetex.devauthneo.config;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,8 @@ public record DevAuthNeoConfig(
 	ConfigValueContainer<String> accountType,
 	Path stateDir,
 	boolean forceHandleAllTokensAsExpired,
-	OAuth2GrantFlowConfig oAuth2
+	OAuth2GrantFlowConfig oAuth2,
+	Duration cacheProfileInfoDuration
 )
 {
 	@SuppressWarnings("checkstyle:MagicNumber")
@@ -35,7 +37,8 @@ public record DevAuthNeoConfig(
 				.map(Paths::get)
 				.orElse(defaultStateDir),
 			configuration.getBoolean("force-handle-all-tokens-as-expired", false),
-			buildOAuth2(configuration)
+			buildOAuth2(configuration),
+			Duration.ofMinutes(configuration.getInteger("cache-profile-info-minutes", 360)) // 6h
 		);
 	}
 	
