@@ -165,9 +165,9 @@ Set ``-Ddevauth.account=otherAccountName``
 ### Security?
 
 The tokens are stored in a file on the disk in above specified folder.
-As with all data on your PC, you as a user are responsible for keeping them secure!
+As with all data on your PC, you as a user are responsible for keeping them secure.
 
-If they got compromissed: Revoke them [here](https://account.live.com/consent/Manage)
+You can revoke tokens in the [Microsoft account settings](https://account.live.com/consent/Manage).
 
 <!-- modrinth_exclude.start -->
 
