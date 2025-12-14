@@ -33,6 +33,10 @@ configurations.checkstyle {
     }
 }
 
+configurations {
+    transitiveInclude
+}
+
 dependencies {
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
 
@@ -43,8 +47,26 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modLocalRuntime(include(compileOnlyApi("me.friwi:jcefmaven:141.0.10")))
-    modLocalRuntime(include(compileOnlyApi("org.slf4j:jul-to-slf4j:2.0.17")))
+    transitiveInclude(implementation("me.friwi:jcefmaven:141.0.10") {
+        // Only needed for rendering off the screen which is never used here
+        exclude group: "me.friwi", module: "jogl-all"
+        // Not used anywhere?
+        exclude group: "me.friwi", module: "gluegen-rt"
+        
+        // Provided by the game
+        // NOTE: This might require shadowing in the future
+        // if Minecraft's and jcef library version diverge to far
+        exclude group: "com.google.code.gson", module: "gson"
+        exclude group: "org.apache.commons", module: "commons-compress"
+    })
+    transitiveInclude(implementation("org.slf4j:jul-to-slf4j:2.0.17") {
+        // Provided by the game
+        exclude group: "org.slf4j", module: "slf4j-api"
+    })
+
+    configurations.transitiveInclude.resolvedConfiguration.resolvedArtifacts.forEach {
+        include(it.moduleVersion.id.toString())
+    }
 }
 
 processResources {
