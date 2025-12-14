@@ -144,7 +144,7 @@ public class EmbeddedAuthCodeGrantFlow extends AuthCodeGrantFlow
 			
 			final JFrame popup = new JFrame();
 			popup.add(browser.getUIComponent());
-			popup.setTitle("dev-auth-neo: Sign in to Microsoft account");
+			popup.setTitle("DevAuth Neo: Sign in to Microsoft account");
 			popup.pack();
 			popup.setSize(600, 700);
 			popup.setLocationRelativeTo(null); // Center
