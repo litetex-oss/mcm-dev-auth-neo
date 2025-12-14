@@ -32,15 +32,16 @@ public class MicrosoftAuthProvider implements AuthProvider
 	private static final String UUID = "uuid";
 	private static final String USERNAME = "username";
 	
-	private final OAuthGrantFlow oAuthGrantFlow;
-	
 	private final Path file;
+	private final boolean forceHandleAllTokensAsExpired;
+	private final OAuthGrantFlow oAuthGrantFlow;
 	
 	private Map<String, Tokens> nameTokens = new HashMap<>();
 	
 	public MicrosoftAuthProvider(final DevAuthNeoConfig config)
 	{
 		this.file = config.stateDir().resolve("microsoft-accounts.json");
+		this.forceHandleAllTokensAsExpired = config.forceHandleAllTokensAsExpired();
 		this.oAuthGrantFlow = switch(config.oAuth2())
 		{
 			case final EmbeddedAuthCodeGrantFlowConfig c -> new EmbeddedAuthCodeGrantFlow(c, config.stateDir());
@@ -61,8 +62,10 @@ public class MicrosoftAuthProvider implements AuthProvider
 	{
 		this.readFile();
 		
-		final MicrosoftLoginExecutor loginExecutor =
-			new MicrosoftLoginExecutor(this.oAuthGrantFlow, this.nameTokens.get(account));
+		final MicrosoftLoginExecutor loginExecutor = new MicrosoftLoginExecutor(
+			this.oAuthGrantFlow,
+			this.forceHandleAllTokensAsExpired,
+			this.nameTokens.get(account));
 		final LoginData loginData = loginExecutor.login();
 		
 		loginExecutor.requiresTokenUpdate().ifPresent(t -> {

@@ -87,6 +87,7 @@ The simplest way to enable it is by setting the corresponding system property: `
 | `enabled` | `bool` | `false` | |
 | `account` | `String` | - | If not set:<br/>Will be prompted via the console |
 | `account-type` | `String` | `microsoft` | Currently only Microsoft is supported |
+| `force-handle-all-tokens-as-expired` | `bool` | `false` | Handles all existing tokens as if they have expired and refreshes them |
 | `state-dir` | `String` | Automatically determined<br/>`~/.dev-auth-neo`) | The directory where the login information of the provider will be saved |
 
 

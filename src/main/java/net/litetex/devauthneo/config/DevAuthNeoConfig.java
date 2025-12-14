@@ -19,6 +19,7 @@ public record DevAuthNeoConfig(
 	ConfigValueContainer<String> account,
 	ConfigValueContainer<String> accountType,
 	Path stateDir,
+	boolean forceHandleAllTokensAsExpired,
 	OAuth2GrantFlowConfig oAuth2
 )
 {
@@ -33,6 +34,7 @@ public record DevAuthNeoConfig(
 				.filter(s -> !s.isEmpty())
 				.map(Paths::get)
 				.orElse(defaultStateDir),
+			configuration.getBoolean("force-handle-all-tokens-as-expired", false),
 			buildOAuth2(configuration)
 		);
 	}

@@ -39,15 +39,18 @@ class MicrosoftLoginExecutor
 	private static final int NOT_FOUND = 404;
 	
 	private final OAuthGrantFlow oAuthGrantFlow;
+	private final boolean forceHandleAllTokensAsExpired;
 	private final Tokens tokens;
 	
 	private boolean updatedTokens;
 	
 	MicrosoftLoginExecutor(
 		final OAuthGrantFlow oAuthGrantFlow,
+		final boolean forceHandleAllTokensAsExpired,
 		final Tokens tokens)
 	{
 		this.oAuthGrantFlow = oAuthGrantFlow;
+		this.forceHandleAllTokensAsExpired = forceHandleAllTokensAsExpired;
 		this.tokens = Objects.requireNonNullElseGet(tokens, Tokens::new);
 	}
 	
@@ -164,7 +167,7 @@ class MicrosoftLoginExecutor
 		final T existingToken = getter.apply(this.tokens);
 		if(existingToken != null)
 		{
-			if(!existingToken.isExpired())
+			if(!existingToken.isExpired() && !this.forceHandleAllTokensAsExpired)
 			{
 				return existingToken;
 			}
@@ -173,7 +176,7 @@ class MicrosoftLoginExecutor
 			{
 				try
 				{
-					refreshFunc.apply(existingToken);
+					return this.setTokenAfterFetch(name, setter, refreshFunc.apply(existingToken));
 				}
 				catch(final Exception ex)
 				{
