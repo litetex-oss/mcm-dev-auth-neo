@@ -94,7 +94,7 @@ _NOTE: All grant-flow options are additionally prefixed with `microsoft.oauth2.`
 | `client-id` | `String` | automatically determined | Designed as general purpose override for e.g. a custom provider |
 | `scopes` | `List<String>` | automatically determined | |
 
-##### `auth-code-embedded` - Auth Code flow using an embedded browser
+#### `auth-code-embedded` Auth Code flow using an embedded browser
 
 * This login mechanism is identical to the one used by Minecraft's launcher
     * Therefore selected by default
@@ -107,7 +107,7 @@ _NOTE: All grant-flow options are additionally prefixed with `microsoft.oauth2.`
 | `use-temporary-cache-dir` | `bool` | `true` | Creates and uses a temporary directory for the browser cache.<br/> If this is set to `false` all browser information (cookies, cache) and also possible logins will be persisted! |
 | `redirect-uri` | `String` | automatically determined | Designed as general purpose override for e.g. a custom provider |
 
-##### `auth-code-external` - Auth Code flow using an external browser
+#### `auth-code-external` Auth Code flow using an external browser
 
 * Same as `auth-code-embedded` however this can be done with the system browser
 * Starts an integrated webserver to get the tokens at the end of the flow
@@ -125,7 +125,7 @@ _NOTE: All grant-flow options are additionally prefixed with `microsoft.oauth2.`
 | `redirect-port` | `int` | automatically determined | Port used for the integrated webserver |
 | `redirect-uri` | `String` | automatically determined | Designed as general purpose override for e.g. a custom provider |
 
-##### `device-code` - Device Code flow
+#### `device-code` Device Code flow
 
 * This flow generates a short code that needs to be verified online with the an account
 * ⚠ This flow depends on 3rd party clients / launchers
