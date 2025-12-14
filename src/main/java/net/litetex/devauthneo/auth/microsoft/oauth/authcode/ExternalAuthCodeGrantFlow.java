@@ -65,7 +65,7 @@ public class ExternalAuthCodeGrantFlow extends AuthCodeGrantFlow
 			requireNonNullElse(config.portForRedirect(), predefinedProvider.port()));
 	}
 	
-	@SuppressWarnings("checkstyle:MagicNumber")
+	@SuppressWarnings({"checkstyle:MagicNumber", "PMD.AvoidUsingHardCodedIP"})
 	@Override
 	protected String getAuthorizationCode(final String codeVerifier)
 	{
@@ -89,7 +89,7 @@ public class ExternalAuthCodeGrantFlow extends AuthCodeGrantFlow
 					final URI uri = req.getRequestURI();
 					
 					// all other paths are 404
-					if(!uri.getPath().equals("/"))
+					if(!"/".equals(uri.getPath()))
 					{
 						req.sendResponseHeaders(404, 0);
 						req.getResponseBody().close();

@@ -99,6 +99,7 @@ public class EmbeddedAuthCodeGrantFlow extends AuthCodeGrantFlow
 			final CefClient client = app.createClient();
 			client.addDisplayHandler(new CefDisplayHandlerAdapter()
 			{
+				@SuppressWarnings("PMD.NonExhaustiveSwitch")
 				@Override
 				public void onAddressChange(final CefBrowser browser, final CefFrame frame, final String url)
 				{
