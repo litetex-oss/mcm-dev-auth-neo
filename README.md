@@ -27,6 +27,33 @@ dependencies {
 
 </details>
 
+<details><summary>via Modrinth</summary>
+
+Add the following to ``build.gradle``:
+```groovy
+repositories {
+    // https://support.modrinth.com/en/articles/8801191-modrinth-maven
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup 'maven.modrinth'
+        }
+    }
+}
+
+dependencies {
+    modImplementation 'maven.modrinth:dev-auth-neo:<version>'
+    // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
+}
+```
+
+</details>
+
 ### Configuration
 
 NOTE: Once installed the mod will also automatically give you hints what to do in the console/logs.
