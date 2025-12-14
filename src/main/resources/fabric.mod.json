@@ -14,7 +14,7 @@
   },
   "license": "${license_spdx_id}",
   "icon": "assets/icon.png",
-  "environment": "*",
+  "environment": "client",
   "mixins": [
     "dev-auth-neo.mixins.json"
   ],
