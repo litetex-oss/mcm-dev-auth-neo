@@ -1,11 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.litetex.template-placeholder.mixin",
+  "package": "net.litetex.devauthneo.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "MainMixin"
+  ]
 }
