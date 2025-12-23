@@ -20,7 +20,7 @@ This is a "reincarnation" of [DevAuth](https://github.com/DJtheRedstoner/DevAuth
 Add the following to ``build.gradle``:
 ```groovy
 dependencies {
-    modImplementation 'net.litetex.mcm:dev-auth-neo:<version>'
+    modLocalRuntime 'net.litetex.mcm:dev-auth-neo:<version>'
     // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
 }
 ```
@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation 'maven.modrinth:dev-auth-neo:<version>'
+    modLocalRuntime 'maven.modrinth:dev-auth-neo:<version>'
     // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
 }
 ```
