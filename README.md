@@ -71,7 +71,7 @@ The simplest way to enable it is by setting the corresponding system property: `
 
 * Environment variables 
     * prefixed with ``DEVAUTH_``
-    * all properties are in UPPERCASE and use `_` (instead of `.`) as delimiter
+    * all properties are in UPPERCASE and use `_` instead of `.` or `-`
 * System properties
     * prefixed with ``devauth.``
 * A configuration file located in ``~/.dev-auth-neo/config.json``
