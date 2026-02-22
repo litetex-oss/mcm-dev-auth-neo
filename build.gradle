@@ -47,7 +47,7 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    transitiveInclude(implementation("me.friwi:jcefmaven:141.0.10") {
+    transitiveInclude(implementation("me.friwi:jcefmaven:143.0.14") {
         // Only needed for rendering off the screen which is never used here
         exclude group: "me.friwi", module: "jogl-all"
         // Not used anywhere?
