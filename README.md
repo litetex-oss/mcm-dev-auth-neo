@@ -20,7 +20,7 @@ This is a "reincarnation" of [DevAuth](https://github.com/DJtheRedstoner/DevAuth
 Add the following to ``build.gradle``:
 ```groovy
 dependencies {
-    modImplementation 'net.litetex.mcm:dev-auth-neo:<version>'
+    modLocalRuntime 'net.litetex.mcm:dev-auth-neo:<version>'
     // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
 }
 ```
@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    modImplementation 'maven.modrinth:dev-auth-neo:<version>'
+    modLocalRuntime 'maven.modrinth:dev-auth-neo:<version>'
     // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
 }
 ```
@@ -71,7 +71,7 @@ The simplest way to enable it is by setting the corresponding system property: `
 
 * Environment variables 
     * prefixed with ``DEVAUTH_``
-    * all properties are in UPPERCASE and use `_` (instead of `.`) as delimiter
+    * all properties are in UPPERCASE and use `_` instead of `.` or `-`
 * System properties
     * prefixed with ``devauth.``
 * A configuration file located in ``~/.dev-auth-neo/config.json``

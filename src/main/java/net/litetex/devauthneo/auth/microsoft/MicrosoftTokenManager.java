@@ -50,7 +50,7 @@ class MicrosoftTokenManager
 		LOG.debug("Initialized with {}", this.oAuthGrantFlow.getClass().getSimpleName());
 	}
 	
-	public String getSessionToken()
+	String getSessionToken()
 	{
 		return this.getToken("session", Tokens::getSession, Tokens::setSession, this::fetchMcSession).getToken();
 	}
@@ -176,7 +176,7 @@ class MicrosoftTokenManager
 		return token;
 	}
 	
-	public Optional<Tokens> requiresTokenUpdate()
+	Optional<Tokens> requiresTokenUpdate()
 	{
 		return this.updatedTokens ? Optional.of(this.tokens) : Optional.empty();
 	}

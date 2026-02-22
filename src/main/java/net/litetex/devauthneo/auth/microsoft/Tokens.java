@@ -12,42 +12,42 @@ class Tokens
 	private XBLToken xsts;
 	private Token session;
 	
-	public OAuthToken getOauth()
+	OAuthToken getOauth()
 	{
 		return this.oauth;
 	}
 	
-	public void setOauth(final OAuthToken oauth)
+	void setOauth(final OAuthToken oauth)
 	{
 		this.oauth = oauth;
 	}
 	
-	public XBLToken getXbl()
+	XBLToken getXbl()
 	{
 		return this.xbl;
 	}
 	
-	public void setXbl(final XBLToken xbl)
+	void setXbl(final XBLToken xbl)
 	{
 		this.xbl = xbl;
 	}
 	
-	public XBLToken getXsts()
+	XBLToken getXsts()
 	{
 		return this.xsts;
 	}
 	
-	public void setXsts(final XBLToken xsts)
+	void setXsts(final XBLToken xsts)
 	{
 		this.xsts = xsts;
 	}
 	
-	public Token getSession()
+	Token getSession()
 	{
 		return this.session;
 	}
 	
-	public void setSession(final Token session)
+	void setSession(final Token session)
 	{
 		this.session = session;
 	}

@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.14.6'
+    id 'fabric-loom' version '1.15.4'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
@@ -9,9 +9,9 @@ plugins {
 }
 
 ext {
-    checkstyleVersion = '12.3.0'
+    checkstyleVersion = '13.2.0'
 
-    pmdVersion = '7.19.0'
+    pmdVersion = '7.21.0'
 }
 
 version = project.mod_version
@@ -47,7 +47,7 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    transitiveInclude(implementation("me.friwi:jcefmaven:141.0.10") {
+    transitiveInclude(implementation("me.friwi:jcefmaven:143.0.14") {
         // Only needed for rendering off the screen which is never used here
         exclude group: "me.friwi", module: "jogl-all"
         // Not used anywhere?
@@ -110,7 +110,6 @@ tasks.withType(JavaCompile).configureEach {
 java {
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
     // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
     withJavadocJar()
 
@@ -161,12 +160,16 @@ publishing {
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+    // Docs: https://docs.gradle.org/current/userguide/publishing_maven.html
+    // repositories.mavenLocal() // uncomment to publish locally
+    if (providers.environmentVariable("MAVEN_PUBLISH_URL").present) {
+        repositories.maven {
+            url = providers.environmentVariable("MAVEN_PUBLISH_URL")
+            credentials {
+                username = providers.environmentVariable("MAVEN_PUBLISH_USERNAME").get()
+                password = providers.environmentVariable("MAVEN_PUBLISH_PASSWORD").get()
+            }
+        }
     }
 }
 

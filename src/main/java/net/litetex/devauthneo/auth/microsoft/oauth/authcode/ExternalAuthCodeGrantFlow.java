@@ -182,7 +182,7 @@ public class ExternalAuthCodeGrantFlow extends AuthCodeGrantFlow
 		String redirectUri
 	)
 	{
-		public PredefinedProvider(final String clientId, final int port)
+		PredefinedProvider(final String clientId, final int port)
 		{
 			this(clientId, port, null);
 		}
