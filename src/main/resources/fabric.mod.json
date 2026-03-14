@@ -18,7 +18,7 @@
   "mixins": [
     "dev-auth-neo.mixins.json"
   ],
-  "accessWidener": "dev-auth-neo.accesswidener",
+  "accessWidener": "dev-auth-neo.classtweaker",
   "recommends": {
     "fabricloader": ">=${loader_version}",
     "minecraft": ">=${minecraft_version}"
