@@ -1,3 +1,6 @@
+# 1.1.0
+* Compatible with Minecraft 26.1+
+
 # 1.0.2
 * Updated dependencies
 
