@@ -1,17 +1,17 @@
 plugins {
-    id 'fabric-loom' version '1.15.4'
+    id 'net.fabricmc.fabric-loom' version '1.15.5'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
     id 'checkstyle'
     id 'pmd'
-    id 'com.modrinth.minotaur' version '2.8.10'
+    id 'com.modrinth.minotaur' version '2.9.0'
 }
 
 ext {
-    checkstyleVersion = '13.2.0'
+    checkstyleVersion = '13.3.0'
 
-    pmdVersion = '7.21.0'
+    pmdVersion = '7.22.0'
 }
 
 version = project.mod_version
@@ -22,7 +22,7 @@ base {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/dev-auth-neo.accesswidener")
+    accessWidenerPath = file("src/main/resources/dev-auth-neo.classtweaker")
     log4jConfigs.from(file("src/dev/log4j2.xml"))
 }
 
@@ -44,8 +44,7 @@ dependencies {
             "net.sourceforge.pmd:pmd-java:${pmdVersion}"
 
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     transitiveInclude(implementation("me.friwi:jcefmaven:143.0.14") {
         // Only needed for rendering off the screen which is never used here
@@ -104,7 +103,7 @@ tasks.withType(Pmd).configureEach {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 25
 }
 
 java {
@@ -113,8 +112,8 @@ java {
     withSourcesJar()
     withJavadocJar()
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 javadoc {
@@ -180,7 +179,7 @@ modrinth {
     projectId = project.archivesBaseName
     // Default/empty value is release
     versionType = System.getenv("MODRINTH_VERSION_TYPE")
-    uploadFile = remapJar
+    uploadFile = jar
     additionalFiles = [sourcesJar]
     syncBodyFrom = rootProject.file("README.md").text
     changelog = System.getenv("MODRINTH_CHANGELOG_TEXT")

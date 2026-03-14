@@ -20,7 +20,7 @@ This is a "reincarnation" of [DevAuth](https://github.com/DJtheRedstoner/DevAuth
 Add the following to ``build.gradle``:
 ```groovy
 dependencies {
-    modLocalRuntime 'net.litetex.mcm:dev-auth-neo:<version>'
+    localRuntime 'net.litetex.mcm:dev-auth-neo:<version>'
     // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
 }
 ```
@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    modLocalRuntime 'maven.modrinth:dev-auth-neo:<version>'
+    localRuntime 'maven.modrinth:dev-auth-neo:<version>'
     // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
 }
 ```
@@ -179,7 +179,7 @@ You can revoke tokens in the [Microsoft account settings](https://account.live.c
 Add the following to ``build.gradle``:
 ```groovy
 dependencies {
-    modImplementation 'net.litetex.mcm:dev-auth-neo:<version>'
+    implementation 'net.litetex.mcm:dev-auth-neo:<version>'
     // Further documentation: https://wiki.fabricmc.net/documentation:fabric_loom
 }
 ```
