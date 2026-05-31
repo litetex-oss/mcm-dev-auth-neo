@@ -58,7 +58,7 @@ dependencies {
         exclude group: "com.google.code.gson", module: "gson"
         exclude group: "org.apache.commons", module: "commons-compress"
     })
-    transitiveInclude(implementation("org.slf4j:jul-to-slf4j:2.0.17") {
+    transitiveInclude(implementation("org.slf4j:jul-to-slf4j:2.0.18") {
         // Provided by the game
         exclude group: "org.slf4j", module: "slf4j-api"
     })
