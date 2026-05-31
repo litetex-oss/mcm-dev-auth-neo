@@ -1,3 +1,6 @@
+# 1.1.1
+* Updated dependencies
+
 # 1.1.0
 * Remove obfuscation
 * Compatible with Minecraft 26.1+
