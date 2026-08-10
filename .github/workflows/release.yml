@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Set up JDK
       uses: actions/setup-java@v5
@@ -22,7 +22,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Try restore Gradle Cache
-      uses: actions/cache/restore@v5
+      uses: actions/cache/restore@v6
       with:
         path: |
           ~/.gradle/caches
@@ -59,7 +59,7 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Configure Git
       run: |
@@ -124,7 +124,7 @@ jobs:
     needs: [prepare_release]
     timeout-minutes: 60
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Set up JDK
       uses: actions/setup-java@v5
@@ -133,7 +133,7 @@ jobs:
         java-version: 25
 
     - name: Try restore Gradle Cache
-      uses: actions/cache/restore@v5
+      uses: actions/cache/restore@v6
       with:
         path: |
           ~/.gradle/caches
@@ -154,7 +154,7 @@ jobs:
 
         awk -v ver="$version" '/^# / { if (p) { exit }; if ($2 == ver) { p=1; next } } p' CHANGELOG.md > current-changelog.txt
         echo "" >> current-changelog.txt
-        echo "[Full changelog](https://github.com/litetex-oss/mcm-dev-auth-neo/blob/dev/CHANGELOG.md)" >> current-changelog.txt
+        echo "[Full changelog](https://github.com/litetex-oss/${{ github.event.repository.name }}/blob/dev/CHANGELOG.md)" >> current-changelog.txt
 
         cat current-changelog.txt
 
@@ -193,7 +193,7 @@ jobs:
         CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
 
     - name: Publish to CurseForge
-      uses: Kira-NT/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # v3
+      uses: Kira-NT/mc-publish@52307b03863581dec6b652b83e597aec02ebb075 # v3
       if: ${{ steps.check-for-curseforge.outputs.has }}
       with:
         curseforge-id: null
@@ -206,7 +206,7 @@ jobs:
     needs: [publish]
     timeout-minutes: 10
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Init Git and pull
       run: |
