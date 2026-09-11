@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version '1.16.2'
+    id 'net.fabricmc.fabric-loom' version '1.17.20'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
@@ -9,9 +9,9 @@ plugins {
 }
 
 ext {
-    checkstyleVersion = '13.5.0'
+    checkstyleVersion = '14.1.0'
 
-    pmdVersion = '7.24.0'
+    pmdVersion = '7.27.0'
 }
 
 version = project.mod_version
@@ -58,7 +58,7 @@ dependencies {
         exclude group: "com.google.code.gson", module: "gson"
         exclude group: "org.apache.commons", module: "commons-compress"
     })
-    transitiveInclude(implementation("org.slf4j:jul-to-slf4j:2.0.18") {
+    transitiveInclude(implementation("org.slf4j:jul-to-slf4j:2.0.19") {
         // Provided by the game
         exclude group: "org.slf4j", module: "slf4j-api"
     })
@@ -117,9 +117,15 @@ java {
 }
 
 javadoc {
-    options.addBooleanOption('html5', true)
-    options.addBooleanOption('Xdoclint:none', true)
-    options.addBooleanOption('quiet', true)
+    def opts = (options as StandardJavadocDocletOptions)
+    opts.addBooleanOption('html5', true)
+    opts.addBooleanOption('Xdoclint:none', true)
+    opts.addBooleanOption('quiet', true)
+    opts.tags(
+            "apiNote:a:API Note:",
+            "implSpec:a:Implementation Requirements:",
+            "implNote:a:Implementation Note:"
+    )
 }
 
 jar {
@@ -181,8 +187,15 @@ modrinth {
     versionType = System.getenv("MODRINTH_VERSION_TYPE")
     uploadFile = jar
     additionalFiles = [sourcesJar]
-    syncBodyFrom = rootProject.file("README.md").text
-    changelog = System.getenv("MODRINTH_CHANGELOG_TEXT")
+    syncBodyFrom = provider {
+        rootProject.file("README.md").text
+    }
+    changelog = provider {
+        def changelogFile = System.getenv("MODRINTH_CHANGELOG_FILE")
+        return changelogFile != null
+                ? rootProject.file(changelogFile).text
+                : System.getenv("MODRINTH_CHANGELOG_TEXT")
+    }
 }
 
 signing {
