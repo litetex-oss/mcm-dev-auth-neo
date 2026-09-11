@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
 import net.litetex.devauthneo.shared.json.JSONSerializer;
 
 
+@SuppressWarnings("checkstyle:IllegalIdentifierName")
 public final class HttpClientUtil
 {
 	public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
@@ -41,7 +42,6 @@ public final class HttpClientUtil
 	
 	public static String buildQuery(final Map<String, String> params)
 	{
-		
 		return params.entrySet()
 			.stream()
 			.map(e -> Stream.of(e.getKey(), e.getValue())
