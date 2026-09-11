@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,12 +15,12 @@ import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.Blaze3D;
 import com.sun.net.httpserver.HttpServer;
 
 import net.litetex.devauthneo.auth.microsoft.oauth.OAuthGrantFlow;
 import net.litetex.devauthneo.auth.shared.HttpClientUtil;
 import net.litetex.devauthneo.config.microsoft.oauth2.authcode.ExternalAuthCodeGrantFlowConfig;
-import net.minecraft.util.Util;
 
 
 public class ExternalAuthCodeGrantFlow extends AuthCodeGrantFlow
@@ -146,33 +145,8 @@ public class ExternalAuthCodeGrantFlow extends AuthCodeGrantFlow
 	{
 		if(this.openSystemBrowser)
 		{
-			try
-			{
-				getPlatform().openUri(URI.create(url));
-			}
-			catch(final Exception ex)
-			{
-				this.logger.warn("Failed to auto open url in browser", ex);
-			}
+			Blaze3D.openUri(URI.create(url));
 		}
-	}
-	
-	private static Util.OS getPlatform()
-	{
-		final String string = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-		if(string.contains("win"))
-		{
-			return Util.OS.WINDOWS;
-		}
-		else if(string.contains("mac"))
-		{
-			return Util.OS.OSX;
-		}
-		else if(string.contains("linux"))
-		{
-			return Util.OS.LINUX;
-		}
-		return string.contains("unix") ? Util.OS.LINUX : Util.OS.UNKNOWN;
 	}
 	
 	record PredefinedProvider(
