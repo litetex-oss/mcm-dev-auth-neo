@@ -1,17 +1,17 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version '1.17.20'
+    id 'net.fabricmc.fabric-loom' version '1.19.6'
     id 'maven-publish'
     id 'signing'
     id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
     id 'checkstyle'
     id 'pmd'
-    id 'com.modrinth.minotaur' version '2.9.0'
+    id 'com.modrinth.minotaur' version '2.10.0'
 }
 
 ext {
-    checkstyleVersion = '14.1.0'
+    checkstyleVersion = '14.4.0'
 
-    pmdVersion = '7.27.0'
+    pmdVersion = '7.29.0'
 }
 
 version = project.mod_version
@@ -24,6 +24,9 @@ base {
 loom {
     accessWidenerPath = file("src/main/resources/dev-auth-neo.classtweaker")
     log4jConfigs.from(file("src/dev/log4j2.xml"))
+    runs.configureEach {
+        preferGradleTask = false
+    }
 }
 
 // https://github.com/gradle/gradle/issues/27035
@@ -46,7 +49,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    transitiveInclude(implementation("me.friwi:jcefmaven:146.0.10") {
+    transitiveInclude(implementation("me.friwi:jcefmaven:152.0.6") {
         // Only needed for rendering off the screen which is never used here
         exclude group: "me.friwi", module: "jogl-all"
         // Not used anywhere?
@@ -58,7 +61,7 @@ dependencies {
         exclude group: "com.google.code.gson", module: "gson"
         exclude group: "org.apache.commons", module: "commons-compress"
     })
-    transitiveInclude(implementation("org.slf4j:jul-to-slf4j:2.0.19") {
+    transitiveInclude(implementation("org.slf4j:jul-to-slf4j:2.0.20") {
         // Provided by the game
         exclude group: "org.slf4j", module: "slf4j-api"
     })
@@ -75,7 +78,8 @@ processResources {
                 "name": project.mod_name,
                 "desc": project.mod_desc,
                 "license_spdx_id": project.mod_license_spdx_id,
-                "minecraft_version": project.minecraft_version,
+                // split on '-' to correctly target versions on non-releases (Snapshots, Prereleases, RC, etc)
+                "minecraft_version": project.minecraft_version.split('-')[0],
                 "loader_version": project.loader_version
     }
 }
